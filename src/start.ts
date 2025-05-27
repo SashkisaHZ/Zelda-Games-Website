@@ -17,8 +17,14 @@ app.use(Express.urlencoded({ extended: true }));
 // Set up EJS
 app.set('view engine', 'ejs');
 
+// Disable Express view caching
+app.set('view cache', false);
+
 // Serve static files from the 'public' base directory
 app.use(Express.static('public'));
+
+// Serve images statically from the /images folder
+app.use('/images', Express.static('images'));
 
 app.use('/', IndexRouter);
 

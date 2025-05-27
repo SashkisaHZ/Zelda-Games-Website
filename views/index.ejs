@@ -1,21 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-    <link rel="stylesheet" href="./css/style.css">
-</head>
+  <meta charset="UTF-8" />
+  <title>Zelda Games</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <style>
+    body {
+      background-color: #f9fafb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
 
+    nav {
+      width: 100%;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #1a202c;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    nav a:focus,
+    nav a:hover {
+      outline: 2px solid #4c51bf;
+      outline-offset: 2px;
+      color: #4c51bf;
+    }
+
+    .articles-container {
+      display: grid;
+      gap: 2rem;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    @media (min-width: 640px) {
+      .articles-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    article {
+      background: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: bold;
+      font-size: 1.75rem;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    p {
+      color: #374151;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .meta {
+      color: #6b7280;
+      font-size: 0.875rem;
+      text-align: center;
+    }
+
+    .game-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-bottom: 1rem;
+      border-radius: 0.25rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      background: white;
+      width: 100%;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+      font-size: 0.9rem;
+      color: #4a5568;
+    }
+
+    footer a {
+      color: #4c51bf;
+      text-decoration: none;
+    }
+
+    footer a:hover,
+    footer a:focus {
+      text-decoration: underline;
+    }
+  </style>
+</head>
 <body>
-    <div class="flex items-center justify-center min-h-screen">
-      <article class="bg-white p-8 rounded shadow-md max-w-lg w-full">
-        <h1 class="text-2xl font-bold mb-4 text-center">Centered Article</h1>
-        <p class="text-gray-700 text-center">
-          <%= article.data.author %>
+
+  <nav aria-label="Primary navigation">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="articles-container">
+    <% games.forEach(game => { %>
+      <article>
+        <% if (game.image) { %>
+          <img src="/images/<%= game.image %>" alt="<%= game.name %> cover" class="game-image" />
+        <% } %>
+        <h1>Game Info</h1>
+        <h2><%= game.name %></h2>
+        <p><%= game.description %></p>
+        <p class="meta">
+          <% if (game.developer) { %>
+            Developed by <%= game.developer %>
+          <% } %>
+          <% if (game.release_date) { %>
+            | Released: <%= game.release_date %>
+          <% } %>
         </p>
       </article>
-    </div>
-</body>
+    <% }) %>
+  </main>
 
+  <footer>
+    <p>Contact us: <a href="mailto:info@zeldagames.com">info@zeldagames.com</a> | Phone: <a href="tel:+1234567890">+1 234 567 890</a></p>
+    <p>Follow us on
+      <a href="https://twitter.com/zelda" target="_blank" rel="noopener noreferrer">Twitter</a>,
+      <a href="https://facebook.com/zelda" target="_blank" rel="noopener noreferrer">Facebook</a>, and
+      <a href="https://instagram.com/zelda" target="_blank" rel="noopener noreferrer">Instagram</a>.
+    </p>
+  </footer>
+
+</body>
 </html>
