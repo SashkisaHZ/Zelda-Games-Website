@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Legend of Zelda - Characters</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @font-face {
+      font-family: 'Hylia Serif';
+      src: url('/fonts/HyliaSerifBeta-Regular.otf') format('opentype');
+    }
+
+    .character-card {
+      transition: all 0.3s ease;
+    }
+
+    .character-card.expanded {
+      position: relative;
+      z-index: 50;
+    }
+
+    .character-details {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+      margin-bottom: 2.5rem;
+    }
+
+    .character-card.expanded .character-details {
+      max-height: 500px !important;
+      opacity: 1 !important;
+      margin-bottom: 0.75rem !important;
+    }
+
+    .card-info {
+      position: absolute;
+      bottom: 1rem;
+      right: 1.5rem;
+      text-align: right;
+      color: #b7b37f;
+      font-style: italic;
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .character-card.expanded .card-info {
+      position: relative;
+      bottom: auto;
+      right: auto;
+      text-align: left;
+      margin-top: 0.75rem;
+      color: #ddd976;
+      font-style: normal;
+      font-size: 0.875rem;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 1rem;
+    }
+
+    .card-image {
+      flex-shrink: 0;
+      width: 56;
+      height: 56;
+      padding: 0.75rem;
+      background-color: #1e6a1e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-image img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 0.5rem;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body class="bg-[#0b3d0b] text-[#f9f0a6] min-h-screen flex flex-col items-center px-6 md:px-12">
+
+  <!-- Hero Section -->
+  <section class="relative w-full mb-16 rounded-lg shadow-lg min-h-[40vh] flex items-center justify-center bg-[url('/images/cover-image.jpg')] bg-center bg-cover">
+    <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg"></div>
+
+    <!-- Nav -->
+    <div class="absolute top-0 right-0 mt-3 mr-3 flex items-center space-x-4 z-50">
+      <button id="burgerBtn" aria-label="Toggle menu" class="relative z-50 flex flex-col w-8 h-7 justify-between cursor-pointer md:hidden">
+        <span class="block h-1 bg-yellow-300 rounded"></span>
+        <span class="block h-1 bg-yellow-300 rounded"></span>
+        <span class="block h-1 bg-yellow-300 rounded"></span>
+      </button>
+
+      <nav id="mobileMenu" class="absolute top-10 right-0 bg-[#145214cc] rounded-md shadow-lg py-4 px-6 space-y-3 hidden md:hidden z-40">
+        <a href="/" class="block text-yellow-300 hover:underline">Home</a>
+        <a href="/about" class="block text-yellow-300 hover:underline">About</a>
+        <a href="/characters" class="block text-yellow-300 hover:underline">Characters</a>
+      </nav>
+
+      <nav class="hidden md:flex space-x-8 text-yellow-300 text-lg font-semibold">
+        <a href="/" class="hover:underline">Home</a>
+        <a href="/about" class="hover:underline">About</a>
+        <a href="/characters" class="hover:underline">Characters</a>
+      </nav>
+    </div>
+
+    <div class="relative z-10 text-yellow-300 max-w-xl px-2 mx-auto text-center">
+      <h1 class="font-zelda text-4xl md:text-5xl mb-2">Legend of Zelda Characters</h1>
+      <p class="text-base md:text-lg font-light leading-relaxed">
+        Explore the iconic characters from the Legend of Zelda series.
+      </p>
+    </div>
+  </section>
+
+  <!-- Characters -->
+  <section class="w-full max-w-7xl mb-20">
+    <h2 class="font-zelda text-4xl md:text-4xl mb-10 text-center text-yellow-300">Characters</h2>
+    <div id="charactersGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <% characters.forEach(character => { %>
+        <article
+          class="character-card bg-[#145214cc] rounded-xl border-2 border-transparent shadow-lg cursor-pointer flex flex-row overflow-hidden transition-all duration-300 ease-in-out"
+          onclick="toggleExpand(this)"
+          data-character-id="<%= character.id %>"
+        >
+          <div class="card-image">
+            <% if (character.image) { %>
+              <img src="<%= character.image %>" alt="<%= character.name %> Image" loading="lazy" />
+            <% } else { %>
+              <img src="https://via.placeholder.com/224x224?text=No+Image" alt="No image available" loading="lazy" />
+            <% } %>
+          </div>
+
+          <div class="flex flex-col flex-grow p-6 text-left relative min-h-[140px]">
+            <h3 class="font-zelda text-yellow-300 text-lg md:text-xl font-semibold mb-2 break-words whitespace-normal">
+              <%= character.name %>
+            </h3>
+
+            <div class="character-details text-[#ddd976] text-sm">
+              <p class="mb-3"><%= character.description || "No description available." %></p>
+            </div>
+
+            <div class="card-info">
+              <span>Race: <%= character.race || 'Unknown' %></span>
+              <span>Gender: <%= character.gender || 'Unknown' %></span>
+              <% if(character.debut) { %>
+                <span>Debut: <%= character.debut %></span>
+              <% } %>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="w-full max-w-7xl text-center text-yellow-400 mb-12 text-sm select-none">
+    <p>© 2025 Nintendo. The Legend of Zelda™ is a trademark of Nintendo.</p>
+    <p>Contact: <a href="mailto:info@zeldagames.com" class="underline hover:text-yellow-300">info@zeldagames.com</a></p>
+  </footer>
+
+  <script>
+    function toggleExpand(card) {
+      if (card.classList.contains('expanded')) {
+        card.classList.remove('expanded');
+        return;
+      }
+      const expanded = document.querySelector('.character-card.expanded');
+      if (expanded) expanded.classList.remove('expanded');
+      card.classList.add('expanded');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    const burgerBtn = document.getElementById('burgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    burgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!burgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

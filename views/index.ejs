@@ -2,168 +2,187 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Zelda Games</title>
-  <link rel="stylesheet" href="./css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Legend of Zelda - Games Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      background-color: #f9fafb;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 2rem;
+    @font-face {
+      font-family: 'Hylia Serif';
+      src: url('/fonts/HyliaSerifBeta-Regular.otf') format('opentype');
+    }
+
+    /* Game card expansion behavior */
+    .game-card {
+      transition: all 0.3s ease;
+    }
+    
+    .game-card.expanded {
+      position: relative;
+      z-index: 50;
+    }
+
+    .game-details {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+      margin-bottom: 2.5rem;
+    }
+
+    .game-card.expanded .game-details {
+      max-height: 500px !important;
+      opacity: 1 !important;
+      margin-bottom: 0.75rem !important;
+    }
+
+    .card-info {
+      position: absolute;
+      bottom: 1rem;
+      right: 1.5rem;
+      text-align: right;
+      color: #b7b37f;
+      font-style: italic;
+      font-size: 0.75rem;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
+      gap: 0.25rem;
+      transition: all 0.3s ease;
     }
 
-    nav {
-      width: 100%;
-      background: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 2rem;
-      padding: 1rem 2rem;
-      border-radius: 0.5rem;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      padding: 0;
-      margin: 0;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #1a202c;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    nav a:focus,
-    nav a:hover {
-      outline: 2px solid #4c51bf;
-      outline-offset: 2px;
-      color: #4c51bf;
-    }
-
-    .articles-container {
-      display: grid;
-      gap: 2rem;
-      width: 100%;
-      max-width: 900px;
-    }
-
-    @media (min-width: 640px) {
-      .articles-container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    article {
-      background: white;
-      padding: 2rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-      font-weight: bold;
-      font-size: 1.75rem;
-    }
-
-    h2 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      text-align: center;
-    }
-
-    p {
-      color: #374151;
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-
-    .meta {
-      color: #6b7280;
+    .game-card.expanded .card-info {
+      position: relative;
+      bottom: auto;
+      right: auto;
+      text-align: left;
+      margin-top: 0.75rem;
+      color: #ddd976;
+      font-style: normal;
       font-size: 0.875rem;
-      text-align: center;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 1rem;
     }
 
-    .game-image {
-      display: block;
-      width: 100%;
-      height: auto;
-      margin-bottom: 1rem;
-      border-radius: 0.25rem;
-    }
-
-    footer {
-      margin-top: 2rem;
-      background: white;
-      width: 100%;
-      padding: 1rem 2rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-      text-align: center;
-      font-size: 0.9rem;
-      color: #4a5568;
-    }
-
-    footer a {
-      color: #4c51bf;
-      text-decoration: none;
-    }
-
-    footer a:hover,
-    footer a:focus {
-      text-decoration: underline;
+    .game-content {
+      position: relative;
+      min-height: 140px;
     }
   </style>
 </head>
-<body>
+<body class="bg-[#0b3d0b] text-[#f9f0a6] min-h-screen flex flex-col items-center px-6 md:px-12">
 
-  <nav aria-label="Primary navigation">
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/contact">Contact</a></li>
-    </ul>
-  </nav>
+  <!-- Hero Section -->
+  <section class="relative w-full mb-16 rounded-lg shadow-lg min-h-[40vh] flex items-center justify-center bg-[url('/images/cover-image.jpg')] bg-center bg-cover">
+    <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg"></div>
 
-  <main class="articles-container">
-    <% games.forEach(game => { %>
-      <article>
-        <% if (game.image) { %>
-          <img src="/images/<%= game.image %>" alt="<%= game.name %> cover" class="game-image" />
-        <% } %>
-        <h1>Game Info</h1>
-        <h2><%= game.name %></h2>
-        <p><%= game.description %></p>
-        <p class="meta">
-          <% if (game.developer) { %>
-            Developed by <%= game.developer %>
-          <% } %>
-          <% if (game.release_date) { %>
-            | Released: <%= game.release_date %>
-          <% } %>
-        </p>
-      </article>
-    <% }) %>
-  </main>
+    <!-- Nav -->
+    <div class="absolute top-0 right-0 mt-3 mr-3 flex items-center space-x-4 z-50">
+      <button id="burgerBtn" aria-label="Toggle menu" class="relative z-50 flex flex-col w-8 h-7 justify-between cursor-pointer md:hidden">
+        <span class="block h-1 bg-yellow-300 rounded"></span>
+        <span class="block h-1 bg-yellow-300 rounded"></span>
+        <span class="block h-1 bg-yellow-300 rounded"></span>
+      </button>
 
-  <footer>
-    <p>Contact us: <a href="mailto:info@zeldagames.com">info@zeldagames.com</a> | Phone: <a href="tel:+1234567890">+1 234 567 890</a></p>
-    <p>Follow us on
-      <a href="https://twitter.com/zelda" target="_blank" rel="noopener noreferrer">Twitter</a>,
-      <a href="https://facebook.com/zelda" target="_blank" rel="noopener noreferrer">Facebook</a>, and
-      <a href="https://instagram.com/zelda" target="_blank" rel="noopener noreferrer">Instagram</a>.
-    </p>
+      <nav id="mobileMenu" class="absolute top-10 right-0 bg-[#145214cc] rounded-md shadow-lg py-4 px-6 space-y-3 hidden md:hidden z-40">
+        <a href="/" class="block text-yellow-300 hover:underline">Home</a>
+        <a href="/about" class="block text-yellow-300 hover:underline">About</a>
+        <a href="/characters" class="block text-yellow-300 hover:underline">Characters</a>
+      </nav>
+
+      <nav class="hidden md:flex space-x-8 text-yellow-300 text-lg font-semibold">
+        <a href="/" class="hover:underline">Home</a>
+        <a href="/about" class="hover:underline">About</a>
+        <a href="/characters" class="hover:underline">Characters</a>
+      </nav>
+    </div>
+
+    <div class="relative z-10 text-yellow-300 max-w-xl px-2 mx-auto text-center">
+      <h1 class="font-zelda text-4xl md:text-5xl mb-2">The Legend of Zelda</h1>
+      <p class="text-base md:text-lg font-light leading-relaxed">
+        Discover the timeless adventures and magical worlds of the iconic Legend of Zelda series.
+      </p>
+    </div>
+  </section>
+
+  <!-- Games -->
+  <section class="w-full max-w-7xl mb-20">
+    <h2 class="font-zelda text-4xl md:text-4xl mb-10 text-center text-yellow-300">Featured Games</h2>
+    <div id="gamesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <% games.forEach(game => { %>
+        <article 
+          class="game-card bg-[#145214cc] rounded-xl border-2 border-transparent shadow-lg cursor-pointer flex flex-row overflow-hidden transition-all duration-300 ease-in-out"
+          onclick="toggleExpand(this)"
+          data-game-id="<%= game.id %>"
+        >
+          <div class="flex-shrink-0 w-56 h-56 p-3 flex items-center justify-center bg-[#1e6a1e]">
+            <% if (game.image) { %>
+              <img
+                src="/images/<%= game.image %>"
+                alt="<%= game.name %> Cover"
+                loading="lazy"
+                class="max-w-full max-h-full object-contain rounded"
+              />
+            <% } else { %>
+              <img
+                src="https://via.placeholder.com/224x224?text=No+Image"
+                alt="No image available"
+                loading="lazy"
+                class="max-w-full max-h-full object-contain rounded"
+              />
+            <% } %>
+          </div>
+
+          <div class="flex flex-col flex-grow p-6 text-left relative min-h-[140px]">
+            <h3 class="font-zelda text-yellow-300 text-lg md:text-xl font-semibold mb-2 break-words whitespace-normal">
+              <%= game.name %>
+            </h3>
+
+            <div class="game-details text-[#ddd976] text-sm">
+              <p class="mb-3"><%= game.description || "No description available." %></p>
+            </div>
+
+            <div class="card-info">
+              <span>Developer: <%= game.developer || 'Nintendo' %></span>
+              <span>Release: <%= game.release_date || 'Unknown' %></span>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="w-full max-w-7xl text-center text-yellow-400 mb-12 text-sm select-none">
+    <p>© 2025 Nintendo. The Legend of Zelda™ is a trademark of Nintendo.</p>
+    <p>Contact: <a href="mailto:info@zeldagames.com" class="underline hover:text-yellow-300">info@zeldagames.com</a></p>
   </footer>
 
+  <script>
+    function toggleExpand(card) {
+      if (card.classList.contains('expanded')) {
+        card.classList.remove('expanded');
+        return;
+      }
+      const expanded = document.querySelector('.game-card.expanded');
+      if (expanded) expanded.classList.remove('expanded');
+      card.classList.add('expanded');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    const burgerBtn = document.getElementById('burgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    burgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!burgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,12 +1,12 @@
- /** @type {import('tailwindcss').Config} */  
-export const content = ['./src/views/*.ejs'];
-
-export const theme = {
-    extend: {},
-};
-
-export const plugins = [
-    {
-        tailwindcss: {},
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./views/**/*.ejs'],
+  theme: {
+    extend: {
+      fontFamily: {
+        zelda: ['"Hylia Serif"', 'serif'],
+      },
     },
-];
+  },
+  plugins: [],
+};
